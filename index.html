@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./assets/css/bootstrap.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="mb-2">
+        <h2 class="text-center">Tic Tac Toe</h2>
+        <h4 class="text-center status">Player <span id="turn">X</span>`s Turn</h3>
+            <div class="score-card d-flex gap-5 mb-4">
+                <div>
+                    <span>Player X`s Score:</span><span id="scoreX">0</span>
+                </div>
+                <div>
+                    <span>Player O`s Score:</span> <span id="scoreO">0</span>
+                </div>
+            </div>
+    </div>
+
+    <div class="board">
+        <button class="cell" id="b1"></button>
+        <button class="cell" id="b2"></button>
+        <button class="cell" id="b3"></button>
+        <button class="cell" id="b4"></button>
+        <button class="cell" id="b5"></button>
+        <button class="cell" id="b6"></button>
+        <button class="cell" id="b7"></button>
+        <button class="cell" id="b8"></button>
+        <button class="cell" id="b9"></button>
+    </div>
+    <button class="btn btn-danger" id="reset-game">Reset Game</button>
+
+
+    <script src="./assets/js/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let turnCount = 0;
+        let xScore = 0;
+        let oScore = 0;
+
+        function clearBoard() {
+            for (let i = 1; i <= 9; i++) {
+                document.getElementById("b" + i).innerHTML = "";
+            }
+            turnCount = 0;
+            document.getElementById("turn").innerHTML = "X";
+        }
+
+        function fullReset() {
+            clearBoard();
+            xScore = 0;
+            oScore = 0;
+            document.getElementById("scoreX").innerHTML = 0;
+            document.getElementById("scoreO").innerHTML = 0;
+        }
+
+        function showWinner(player) {
+            Swal.fire({
+                title: "Player " + player + " Wins!",
+                icon: "success",
+                showConfirmButton: true, 
+            }).then(() => {
+                clearBoard();
+            });
+
+            if (player === "X") {
+                xScore++;
+                document.getElementById("scoreX").innerHTML = xScore;
+            } else {
+                oScore++;
+                document.getElementById("scoreO").innerHTML = oScore;
+            }
+        }
+
+        // Show draw alert
+        function showDraw() {
+            Swal.fire({
+                title: "It's a Draw!",
+                icon: "info",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true
+            }).then(() => {
+                clearBoard();
+            });
+        }
+
+        // Check for winner logic
+        function checkWinner(symbol) {
+            // All winning positions
+            let winPatterns = [
+                [1, 2, 3], [4, 5, 6], [7, 8, 9],  // rows
+                [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
+                [1, 5, 9], [3, 5, 7]              // diagonals
+            ];
+
+            for (let i = 0; i < winPatterns.length; i++) {
+                let pos = winPatterns[i];
+                let a = document.getElementById("b" + pos[0]).innerHTML;
+                let b = document.getElementById("b" + pos[1]).innerHTML;
+                let c = document.getElementById("b" + pos[2]).innerHTML;
+
+                if (a === symbol) {
+                    if (b === symbol) {
+                        if (c === symbol) {
+                            showWinner(symbol);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // Main game logic on document ready
+        $(document).ready(function () {
+            $(".cell").on("click", function () {
+                let box = this;
+
+                if (box.innerHTML === "") {
+                    if (turnCount % 2 === 0) {
+                        box.innerHTML = "X";
+                        document.getElementById("turn").innerHTML = "O";
+                    } else {
+                        box.innerHTML = "O";
+                        document.getElementById("turn").innerHTML = "X";
+                    }
+
+                    turnCount++;
+
+                    if (turnCount >= 5) {
+                        let current = box.innerHTML;
+
+                        if (checkWinner(current)) {
+                            // Winner already handled
+                        } else {
+                            if (turnCount === 9) {
+                                showDraw();
+                            }
+                        }
+                    }
+                } else {
+                    alert("You cannot overwrite this move!");
+                }
+            });
+
+            $("#reset-game").on("click", function () {
+                fullReset();
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
