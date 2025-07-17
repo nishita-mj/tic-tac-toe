@@ -14,7 +14,11 @@
 <body>
 
     <div class="mb-2">
-        <h2 class="text-center">Tic Tac Toe</h2>
+        <div class="text-center">
+            <span class=" tic ">Tic</span>
+            <span class=" tac ">Tac</span>
+            <span class=" toe">Toe</span>
+        </div>
         <h4 class="text-center status">Player <span id="turn">X</span>`s Turn</h3>
             <div class="score-card d-flex gap-5 mb-4">
                 <div>
@@ -27,15 +31,15 @@
     </div>
 
     <div class="board">
-        <button class="box" id="b1"></button>
+        <button class="box-1" id="b1"></button>
         <button class="box" id="b2"></button>
-        <button class="box" id="b3"></button>
+        <button class="box-1" id="b3"></button>
         <button class="box" id="b4"></button>
-        <button class="box" id="b5"></button>
+        <button class="box-1" id="b5"></button>
         <button class="box" id="b6"></button>
-        <button class="box" id="b7"></button>
+        <button class="box-1" id="b7"></button>
         <button class="box" id="b8"></button>
-        <button class="box" id="b9"></button>
+        <button class="box-1" id="b9"></button>
     </div>
     <button class="btn btn-danger" id="reset-game">Reset Game</button>
 
@@ -81,7 +85,7 @@
             }
         }
 
-        function showDraw() {   
+        function showDraw() {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -119,30 +123,18 @@
         }
 
         $(document).ready(function () {
-            $(".box").on("click", function () {
+            $(".box, .box-1").on("click", function () {
                 let box = this;
 
                 if (box.innerHTML === "") {
-                    if (turnCount % 2 === 0) {
-                        box.innerHTML = "X";
-                        document.getElementById("turn").innerHTML = "O";
-                    } else {
-                        box.innerHTML = "O";
-                        document.getElementById("turn").innerHTML = "X";
-                    }
-
+                    let currentSymbol = turnCount % 2 === 0 ? "X" : "O";
+                    box.innerHTML = currentSymbol;
+                    document.getElementById("turn").innerHTML = currentSymbol === "X" ? "O" : "X";
                     turnCount++;
 
                     if (turnCount >= 5) {
-                        let current = box.innerHTML;
-
-                        if (checkWinner(current)) {
-                            // Winner already handled
-                        } else {
-                            if (turnCount === 9) {
-                                showDraw();
-                            }
-                        }
+                        if (checkWinner(currentSymbol)) return;
+                        if (turnCount === 9) showDraw();
                     }
                 } else {
                     alert("You cannot overwrite this move!");
