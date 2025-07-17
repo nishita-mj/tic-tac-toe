@@ -27,15 +27,15 @@
     </div>
 
     <div class="board">
-        <button class="cell" id="b1"></button>
-        <button class="cell" id="b2"></button>
-        <button class="cell" id="b3"></button>
-        <button class="cell" id="b4"></button>
-        <button class="cell" id="b5"></button>
-        <button class="cell" id="b6"></button>
-        <button class="cell" id="b7"></button>
-        <button class="cell" id="b8"></button>
-        <button class="cell" id="b9"></button>
+        <button class="box" id="b1"></button>
+        <button class="box" id="b2"></button>
+        <button class="box" id="b3"></button>
+        <button class="box" id="b4"></button>
+        <button class="box" id="b5"></button>
+        <button class="box" id="b6"></button>
+        <button class="box" id="b7"></button>
+        <button class="box" id="b8"></button>
+        <button class="box" id="b9"></button>
     </div>
     <button class="btn btn-danger" id="reset-game">Reset Game</button>
 
@@ -67,7 +67,7 @@
             Swal.fire({
                 title: "Player " + player + " Wins!",
                 icon: "success",
-                showConfirmButton: true, 
+                showConfirmButton: true,
             }).then(() => {
                 clearBoard();
             });
@@ -81,26 +81,22 @@
             }
         }
 
-        // Show draw alert
-        function showDraw() {
+        function showDraw() {   
             Swal.fire({
-                title: "It's a Draw!",
-                icon: "info",
-                timer: 1500,
-                showConfirmButton: false,
-                timerProgressBar: true
+                icon: "error",
+                title: "Oops...",
+                text: "It's a Draw!"
             }).then(() => {
                 clearBoard();
             });
         }
 
-        // Check for winner logic
         function checkWinner(symbol) {
-            // All winning positions
+
             let winPatterns = [
-                [1, 2, 3], [4, 5, 6], [7, 8, 9],  // rows
-                [1, 4, 7], [2, 5, 8], [3, 6, 9],  // columns
-                [1, 5, 9], [3, 5, 7]              // diagonals
+                [1, 2, 3], [4, 5, 6], [7, 8, 9],
+                [1, 4, 7], [2, 5, 8], [3, 6, 9],
+                [1, 5, 9], [3, 5, 7]
             ];
 
             for (let i = 0; i < winPatterns.length; i++) {
@@ -122,9 +118,8 @@
             return false;
         }
 
-        // Main game logic on document ready
         $(document).ready(function () {
-            $(".cell").on("click", function () {
+            $(".box").on("click", function () {
                 let box = this;
 
                 if (box.innerHTML === "") {
