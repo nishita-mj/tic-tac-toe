@@ -118,7 +118,6 @@
                     }
                 }
             }
-
             return false;
         }
 
@@ -137,7 +136,7 @@
                         if (turnCount === 9) showDraw();
                     }
                 } else {
-                    alert("You cannot overwrite this move!");
+                    Swal.fire("You cannot overwrite this move!");                               
                 }
             });
 
